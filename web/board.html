@@ -5,17 +5,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<canvas id='board' />
-
-
+	<div style='float:right'>
+		<ul style= 'background-color: grey;' id='jogadores'  />
+	</div>
+	<div style='float:left'>
+		<canvas id='board'  />
+	</div>
+	<div style='clear:both;' />
 	<script>
 		var tanques = new Array();
 		var projeteis = new Array();
 		var canvas = document.getElementById('board');
 		var context = canvas.getContext('2d');
 
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
+		canvas.width = 754;
+		canvas.height = 383;
 
 		function calculaVetor( x0, y0, len, angulo ) {
 
@@ -25,14 +29,17 @@
 		}
 
 		function atualizaJogo() {
+			
+			var lista = document.getElementById( 'jogadores' );
+			var jogadores = "";
 			for ( tanque in tanques ) {
-				
+				jogadores += "<li>" + tanques[ tanque ].id + "</li>";
 				var v = calculaVetor( tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].velocidade, tanques[ tanque ].rotacao );
 
 				tanques[ tanque ].x = v[ 0 ];
 				tanques[ tanque ].y = v[ 1 ];
 				
-				tanques[ tanque ].velocidade = tanques[ tanque ].velocidade / 2;
+				tanques[ tanque ].velocidade = tanques[ tanque ].velocidade / 1.1;
 			}		
 			
 			for ( projetil in projeteis ) {
@@ -56,6 +63,8 @@
 					}
 				}				
 			}			
+			
+			lista.innerHTML = jogadores;
 		}
 		
 		function desenhaJogo( context ) {
@@ -85,6 +94,7 @@
 		
 // 		setInterval( function() {
 // 			atirar( 1 );
+// // 			moverTanque( 1, 5, 1 );
 // 		}, 4000 );
 		
 		function desenhaCirculo(context, x0, y0, radius, style) {
@@ -217,21 +227,25 @@
 		
 		function atirar( id ) {
 			projeteis.push( new Projetil( tanques[ id ] ) );
+			moverTanque( id, tanques[ id ].rotacao, -0.1 );
 		}
 		
 		
 		function moverTanque( id, rotacao, velocidade ) {
 			tanques[ id ].rotacao += rotacao;
 			tanques[ id ].velocidade += velocidade * 20;
+			
+			
 		}
 		
 // 		criarTanque( 1, "blue" );
 // 		tanques[ 1 ].x = 120;
 // 		tanques[ 1 ].y = 120;
-// 		criarTanque( 2, "blue" );
+// 		criarTanque( 2, "red" );
 // 		tanques[ 2 ].x = 550;
 // 		tanques[ 2 ].y = 120;
 		
+// 		atirar( 1 );
 		
 	</script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
