@@ -44,7 +44,7 @@
 				
 				for ( tanque in tanques ) {
 					
-					if( tanques[ tanque ] != ( projeteis[ projetil ].emissor )  && tanques[ tanque ].atingido( projeteis[ projetil ] ) ) {
+					if( tanques[ tanque ].time != ( projeteis[ projetil ].emissor.time )  && tanques[ tanque ].atingido( projeteis[ projetil ] ) ) {
 						projeteis.splice( projetil, 1);
 						
 						tanques[ tanque ].escudo -= 1.0;
@@ -225,7 +225,7 @@
 			tanques[ id ].velocidade += velocidade * 20;
 		}
 		
-// 		criarTanque( 1, "red" );
+// 		criarTanque( 1, "blue" );
 // 		tanques[ 1 ].x = 120;
 // 		tanques[ 1 ].y = 120;
 // 		criarTanque( 2, "blue" );
