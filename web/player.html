@@ -16,12 +16,32 @@
 <body>
 <ul id="messages"></ul>
 <form action="">
-    <input id="m" autocomplete="off" /><button>Send</button>
-    <button id="shoot">Atirar</button>
-    <button id="up"> ^ </button>
-    <button id="left" > < </button>
-    <button id="right"> > </button>
-    <button id="down"> v </button>
+	<center>
+		<table>
+			<tr>
+				<td/>
+				<td><button id="up"> ^ </button></td>
+				<td/>
+			</tr>
+			<tr>
+				<td>
+					<button id="left" > < </button>
+				</td>
+				<td/>
+				<td>
+					<button id="right"> > </button>
+				</td>
+			</tr>
+			<tr>
+				<td/>
+				<td>
+					<button id="down"> v </button>
+				</td>
+				<td/>
+			</tr>	
+		</table>
+		<button id="shoot">Atirar</button>
+	</center>
 </form>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
