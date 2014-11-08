@@ -5,13 +5,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div style='float:right'>
-		<ul style= 'background-color: grey;' id='jogadores'  />
-	</div>
-	<div style='float:left'>
 		<canvas id='board'  />
-	</div>
-	<div style='clear:both;' />
+		<ul style= 'background-color: grey;' id='jogadores'  />
 	<script>
 		var tanques = new Array();
 		var projeteis = new Array();
@@ -51,7 +46,7 @@
 				
 				for ( tanque in tanques ) {
 					
-					if( tanques[ tanque ].time != ( projeteis[ projetil ].emissor.time )  && tanques[ tanque ].atingido( projeteis[ projetil ] ) ) {
+					if( tanques[ tanque ].atingido( projeteis[ projetil ] ) ) {
 						projeteis.splice( projetil, 1);
 						
 						tanques[ tanque ].escudo -= 1.0;
@@ -72,7 +67,7 @@
 			desenhaTabuleiro(context, 0, 0, 754, 383, "#000");
 			
 			for ( tanque in tanques ) {
-				desenhaTanque( context, tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].rotacao , tanques[ tanque ].time )
+				desenhaTanque( context, tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].rotacao , tanques[ tanque ].time, tanques[ tanque ].id )
 			}
 			
 			for ( projetil in projeteis ) {
@@ -84,7 +79,7 @@
 	
 		timerDesenho = setInterval(function() {
 			desenhaJogo( context );
-		}, 200);
+		}, 50);
 
 		var timerJogo;
 
@@ -150,7 +145,7 @@
 					+ (30 * Math.sin(rad1)), "#000");
 		}
 
-		function desenhaTanque(context, x, y, rotacao, style) {
+		function desenhaTanque(context, x, y, rotacao, style, id ) {
 			
 			var angulo = rotacao
 			
@@ -194,6 +189,9 @@
 			desenhaLinha(context, x0, y0, x3, y3, style );
 			
 			desenhaLinha(context, x, y, x4, y4, style );
+			
+			
+			context.strokeText( id, x, y );
 		}
 		
 		function Tanque( id, time ) {
@@ -234,8 +232,6 @@
 		function moverTanque( id, rotacao, velocidade ) {
 			tanques[ id ].rotacao += rotacao;
 			tanques[ id ].velocidade += velocidade * 20;
-			
-			
 		}
 		
 // 		criarTanque( 1, "blue" );
