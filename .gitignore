@@ -1,0 +1,12 @@
+.DS_Store
+
+# built application files
+bin/
+*.apk
+*.ap_
+
+########## Eclipse ##########
+
+.classpath
+.project
+classes/
