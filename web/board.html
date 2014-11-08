@@ -32,7 +32,7 @@
 				tanques[ tanque ].x = v[ 0 ];
 				tanques[ tanque ].y = v[ 1 ];
 				
-				tanques[ tanque ].velocidade = tanques[ tanque ].velocidade / 2;
+				tanques[ tanque ].velocidade = tanques[ tanque ].velocidade / 1.1;
 			}		
 			
 			for ( projetil in projeteis ) {
@@ -85,6 +85,7 @@
 		
 // 		setInterval( function() {
 // 			atirar( 1 );
+// // 			moverTanque( 1, 5, 1 );
 // 		}, 4000 );
 		
 		function desenhaCirculo(context, x0, y0, radius, style) {
@@ -217,21 +218,25 @@
 		
 		function atirar( id ) {
 			projeteis.push( new Projetil( tanques[ id ] ) );
+			moverTanque( id, tanques[ id ].rotacao, -0.1 );
 		}
 		
 		
 		function moverTanque( id, rotacao, velocidade ) {
 			tanques[ id ].rotacao += rotacao;
 			tanques[ id ].velocidade += velocidade * 20;
+			
+			
 		}
 		
 // 		criarTanque( 1, "blue" );
 // 		tanques[ 1 ].x = 120;
 // 		tanques[ 1 ].y = 120;
-// 		criarTanque( 2, "blue" );
+// 		criarTanque( 2, "red" );
 // 		tanques[ 2 ].x = 550;
 // 		tanques[ 2 ].y = 120;
 		
+// 		atirar( 1 );
 		
 	</script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
