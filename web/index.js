@@ -35,6 +35,11 @@ io.on('connection', function(socket){
         io.sockets.emit('create', '{"id" : "'+username+'", "time": "'+time+'"}');
     });
 
+    socket.on('shoot', function(username){
+        io.sockets.emit('board-shoot', username);
+        console.log('shoot: '+username);
+    });
+
 
 
 });

@@ -17,15 +17,18 @@
 <ul id="messages"></ul>
 <form action="">
     <input id="m" autocomplete="off" /><button>Send</button>
+    <button id="shoot">Atirar</button>
 </form>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
     var socket = io()
+    var username;
 
     socket.on('connect', function(){
         // call the server-side function 'adduser' and send one parameter (value of prompt)
-        socket.emit('adduser', prompt("What's your name?"));
+        username = prompt("What's your name?");
+        socket.emit('adduser', username);
     });
 
 
@@ -37,6 +40,12 @@
     socket.on('board', function(msg){
         $('#messages').append($('<li>').text(msg));
     });
+
+    $("#shoot").click(function(){
+        socket.emit('shoot', username);
+        console.log("shoot");
+    });
+
 </script>
 </body>
 </html>

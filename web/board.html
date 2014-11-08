@@ -237,29 +237,25 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-        var socket = io();
-        socket.on('board', function(msgStr){
-          
-        	var msg = JSON.parse( msgStr );
-            switch ( msg.command ) {
-            	case "create":
-	            	criarTanque( msg.params.id, msg.params.time );
-	            	break;
-
-            	case "shoot":
-	            	atirar( msg.params.id );
-	            	break;
-
-            	case "move":
-	            	moverTanque( msg.params.id, msg.params.r, msg.params.speed );
-	            	break;
-            }
-        });
+        var socket = io()
 
         socket.on('create', function(msgStr){
             var msg = JSON.parse( msgStr );
             criarTanque( msg.id, msg.time );
         });
+
+        socket.on('board-shoot', function(msgStr){
+           // var msg = JSON.parse( msgStr );
+            atirar( msgStr );
+            console.log("shoot: "+msgStr);
+        });
+
+        socket.on('move', function(msgStr){
+            var msg = JSON.parse( msgStr );
+            moverTanque( msg.id, msg.r, msg.speed );
+        });
+
+
 
     </script>
 </body>
