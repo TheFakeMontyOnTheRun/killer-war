@@ -40,6 +40,10 @@ io.on('connection', function(socket){
         console.log('shoot: '+username);
     });
 
+    socket.on('move', function(params){
+        io.sockets.emit('board-move', params);
+        console.log('up: '+params);
+    });
 
 
 });
