@@ -16,12 +16,36 @@
 		canvas.height = window.innerHeight;
 
 		function desenhaJogo( context ) {
-			limpaTela( context, "#FFF" );
+			limpaTela( context, "#000" );
+			
 			desenhaTabuleiro(context, 0, 0, 754, 383, "#000");
-			desenhaObstaculo(context, 30, 30, 90, "#0F0");
-			desenhaTanque(context, 150, 150, rotacao, "#F00");
-			desenhaTanque(context, 190, 120, 200, "#00F");
-			desenhaProjetil( context, 160, 130, rotacao, "#000" );
+			
+			var v;
+			
+			
+			v = rotate( 30, 30, 754 / 2, 383 / 2, rotacao),
+			desenhaObstaculo(context, v[ 0 ], v[ 1 ], 90, "#0F0");
+
+			v = rotate( 150, 150, 754 / 2, 383 / 2, rotacao),
+			desenhaTanque(context, v[ 0 ], v[ 1 ], rotacao, "#F00");
+			
+			v = rotate( 190, 120, 754 / 2, 383 / 2, rotacao),			
+			desenhaTanque(context, v[ 0 ], v[ 1 ], rotacao - 200, "#00F");
+			
+			desenhaProjetil( context, 160, 130, rotacao, "#FFF" );
+			
+			
+			desenhaProps( context );
+		}
+		
+		function desenhaProps( context ) {
+			for ( var step = 20; step < 1025; step += 50 ) {
+				
+				desenhaCirculo( context, 754 / 2, 383 / 2, step, "#9F9" );
+				
+			}
+
+			desenhaVetor( context, 754 / 2, 383 / 2, 1024, rotacao, "#6F6" );
 		}
 		
 		var rotacao = 0;
@@ -54,7 +78,32 @@
 			context.moveTo(x0, y0);
 			context.lineTo(x1, y1);
 			context.stroke();
+		}
 
+		//http://stackoverflow.com/questions/17410809/how-to-calculate-rotation-in-2d-in-javascript
+		function rotate( x, y, cx, cy, angle) {
+		    var radians = (Math.PI / 180) * angle,
+		        cos = Math.cos(radians),
+		        sin = Math.sin(radians),
+		        nx = (cos * (x - cx)) - (sin * (y - cy)) + cx,
+		        ny = (sin * (x - cx)) + (cos * (y - cy)) + cy;
+		    return [nx, ny];
+		}
+
+
+		function calculaVetor( x0, y0, len, angulo ) {
+
+			var rad = grauParaRad(angulo);
+	
+			return [ x0 + ( len * Math.cos(rad) ), y0 + ( len * Math.sin(rad) ) ];
+		}
+		
+		function desenhaVetor( context, x, y, len, angulo, style ) {
+			
+			var rad = grauParaRad(angulo);
+			var v = calculaVetor( x, y, len, angulo );
+
+			desenhaLinha( context, x, y, v[ 0 ], v[ 1 ], style );
 		}
 
 		function desenhaQuadrado(context, x0, y0, x1, y1, style) {
@@ -83,9 +132,7 @@
 			var rad1 = grauParaRad(angulo);
 			
 			desenhaCirculo( context, x0, y0, 5, style );
-			
-			desenhaLinha(context, x0, y0, x0 + (30 * Math.cos(rad1)), y0
-					+ (30 * Math.sin(rad1)), style);
+			desenhaVetor( context, x0, y0, 30, 180 - rotacao, style );			
 		}
 
 		function desenhaTanque(context, x, y, rotacao, style) {
@@ -134,15 +181,5 @@
 			desenhaLinha(context, x, y, x4, y4, style );
 		}
 	</script>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-        socket.on('board', function(msg){
-            //Comandos aqui
-            $('#messages').append($('<li>').text(msg));
-            
-            
-        });
-    </script>
 </body>
 </html>
