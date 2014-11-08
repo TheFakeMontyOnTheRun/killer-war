@@ -1,18 +1,21 @@
 package br.com.killerwar;
 
+import java.net.URISyntaxException;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
-import br.com.killerwar.util.Util;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.drive.Drive;
-
 
 public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
@@ -26,10 +29,10 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        url = "http://google.com.br";
+        url = "";
         
-        webView = (WebView) findViewById(R.id.webView);
-        webView.loadUrl(url);
+        SendThread sendThread = new SendThread();
+        sendThread.run();
         
         connectGooglePlayService();
     }
@@ -46,7 +49,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -56,9 +59,9 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
