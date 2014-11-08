@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -17,9 +19,11 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.drive.Drive;
 
-public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
 
 	String url;
+	
+	Button btUp, btDown, btLeft, btRight, btFire;
 	
 	GoogleApiClient googleApiClient;
 	
@@ -27,6 +31,21 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        btFire = (Button) findViewById(R.id.btFire);
+        btFire.setOnClickListener(this);
+        
+        btLeft = (Button) findViewById(R.id.btLeft);
+        btLeft.setOnClickListener(this);
+        
+        btRight = (Button) findViewById(R.id.btRight);
+        btRight.setOnClickListener(this);
+        
+        btDown = (Button) findViewById(R.id.btDown);
+        btDown.setOnClickListener(this);
+        
+        btUp = (Button) findViewById(R.id.btUp);
+        btUp.setOnClickListener(this);
         
         final Socket socket;
 		try {
@@ -95,14 +114,34 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public void onConnectionSuspended(int arg0) {
-		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.btDown:
+				
+				break;
+				
+			case R.id.btFire:
+				
+				break;
+			case R.id.btLeft:
+				
+				break;
+			case R.id.btRight:
+				
+				break;
+			case R.id.btUp:
+				
+				break;				
+		}
 	}
 }
