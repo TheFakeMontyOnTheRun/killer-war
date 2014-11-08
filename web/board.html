@@ -5,17 +5,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<canvas id='board' />
-
-
+	<div style='float:right'>
+		<ul style= 'background-color: grey;' id='jogadores'  />
+	</div>
+	<div style='float:left'>
+		<canvas id='board'  />
+	</div>
+	<div style='clear:both;' />
 	<script>
 		var tanques = new Array();
 		var projeteis = new Array();
 		var canvas = document.getElementById('board');
 		var context = canvas.getContext('2d');
 
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
+		canvas.width = 754;
+		canvas.height = 383;
 
 		function calculaVetor( x0, y0, len, angulo ) {
 
@@ -25,8 +29,11 @@
 		}
 
 		function atualizaJogo() {
+			
+			var lista = document.getElementById( 'jogadores' );
+			var jogadores = "";
 			for ( tanque in tanques ) {
-				
+				jogadores += "<li>" + tanques[ tanque ].id + "</li>";
 				var v = calculaVetor( tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].velocidade, tanques[ tanque ].rotacao );
 
 				tanques[ tanque ].x = v[ 0 ];
@@ -56,6 +63,8 @@
 					}
 				}				
 			}			
+			
+			lista.innerHTML = jogadores;
 		}
 		
 		function desenhaJogo( context ) {
