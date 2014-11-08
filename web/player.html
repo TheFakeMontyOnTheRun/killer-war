@@ -21,7 +21,14 @@
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-    var socket = io();
+    var socket = io()
+
+    socket.on('connect', function(){
+        // call the server-side function 'adduser' and send one parameter (value of prompt)
+        socket.emit('adduser', prompt("What's your name?"));
+    });
+
+
     $('form').submit(function(){
         socket.emit('board', $('#m').val());
         $('#m').val('');

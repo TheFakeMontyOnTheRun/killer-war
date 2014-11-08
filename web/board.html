@@ -228,6 +228,12 @@
 	            	break;
             }
         });
+
+        socket.on('create', function(msgStr){
+            var msg = JSON.parse( msgStr );
+            criarTanque( msg.id, msg.time );
+        });
+
     </script>
 </body>
 </html>
