@@ -19,7 +19,6 @@ import com.google.android.gms.drive.Drive;
 
 public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
-	WebView webView;
 	String url;
 	
 	GoogleApiClient googleApiClient;
@@ -29,11 +28,34 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        url = "";
-        
-        SendThread sendThread = new SendThread();
-        sendThread.run();
-        
+        final Socket socket;
+		try {
+			socket = IO.socket("https://10.20.12.170:3001/");
+		
+			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+
+    		  @Override
+    		  public void call(Object... args) {
+    			  socket.emit("adduser", "teste");
+        		  socket.disconnect();
+    		  }
+
+    		}).on("board", new Emitter.Listener() {
+
+    		  @Override
+    		  public void call(Object... args) {
+    		  }
+
+    		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+
+    		  @Override
+    		  public void call(Object... args) {}
+
+    		});
+    		socket.connect();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
         connectGooglePlayService();
     }
 
@@ -58,7 +80,6 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
