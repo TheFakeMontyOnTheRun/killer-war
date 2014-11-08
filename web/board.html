@@ -260,7 +260,7 @@
             console.log("shoot: "+msgStr);
         });
 
-        socket.on('move', function(msgStr){
+        socket.on('board-move', function(msgStr){
             var msg = JSON.parse( msgStr );
             moverTanque( msg.id, msg.r, msg.speed );
         });

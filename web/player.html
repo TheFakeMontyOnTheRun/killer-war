@@ -70,6 +70,26 @@
         console.log("shoot");
     });
 
+    $("#up").click(function(){
+        socket.emit('move', '{"id":"'+username+'", "r":0, "speed":0.1}');
+        console.log("up");
+    });
+
+    $("#down").click(function(){
+        socket.emit('move', '{"id":"'+username+'", "r":0, "speed":-0.1}');
+        console.log("up");
+    });
+
+    $("#left").click(function(){
+        socket.emit('move', '{"id":"'+username+'", "r":-20, "speed":0}');
+        console.log("up");
+    });
+
+    $("#right").click(function(){
+        socket.emit('move', '{"id":"'+username+'", "r":20, "speed":0}');
+        console.log("up");
+    });
+
 </script>
 </body>
 </html>
