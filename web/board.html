@@ -9,31 +9,54 @@
 
 
 	<script>
+		var tanques = new Array();
 		var canvas = document.getElementById('board');
 		var context = canvas.getContext('2d');
 
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 
+		function calculaVetor( x0, y0, len, angulo ) {
+
+			var rad = grauParaRad(angulo);
+	
+			return [ x0 + ( len * Math.cos(rad) ), y0 + ( len * Math.sin(rad) ) ];
+		}
+
+		function atualizaJogo() {
+			for ( tanque in tanques ) {
+				
+				var v = calculaVetor( tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].velocidade, tanques[ tanque ].rotacao );
+
+				tanques[ tanque ].x = v[ 0 ];
+				tanques[ tanque ].y = v[ 1 ];
+				
+				tanques[ tanque ].velocidade = tanques[ tanque ].velocidade / 2;
+			}			
+		}
+		
 		function desenhaJogo( context ) {
 			limpaTela( context, "#FFF" );
 			desenhaTabuleiro(context, 0, 0, 754, 383, "#000");
-			desenhaObstaculo(context, 30, 30, 90, "#0F0");
-			desenhaTanque(context, 150, 150, rotacao, "#F00");
-			desenhaTanque(context, 190, 120, 200, "#00F");
-			desenhaProjetil( context, 160, 130, rotacao, "#000" );
+			
+			for ( tanque in tanques ) {
+				desenhaTanque( context, tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].rotacao , tanques[ tanque ].time )
+			}
 		}
 		
-// 		var rotacao = 0;
-// 		var timer;
-// 		timer = setInterval(function() {
-// 			rotacao += 6.0;
-// 			desenhaJogo( context );
-// 			}, 200);
+		var timerDesenho;
+	
+		timerDesenho = setInterval(function() {
+			desenhaJogo( context );
+		}, 200);
+
+		var timerJogo;
+
+		timerJogo = setInterval(function() {
+			atualizaJogo();
+		}, 200);
 		
-// // 		for ( var rotacao = 0; rotacao < 360; rotacao += 0.01 ) {
-// 			desenhaJogo( context );			
-// // 		}
+		
 		
 		function desenhaCirculo(context, x0, y0, radius, style) {
 
@@ -45,7 +68,7 @@
 		
 		function limpaTela( context, style ) {
 			context.fillStyle = style;
-			context.fillRect( 0,0,1024, 1024); 
+			context.fillRect( 0, 0, 1024, 1024); 
 		}
 
 		function desenhaLinha(context, x0, y0, x1, y1, style) {
@@ -133,18 +156,51 @@
 			
 			desenhaLinha(context, x, y, x4, y4, style );
 		}
+		
+		function Tanque( id, time ) {
+			this.time = time;
+			this.id = id;
+			this.rotacao = 0;
+			this.x = Math.random() * 255;
+			this.y = Math.random() * 255;
+			this.velocidade = 0;
+		}
+		
+		
+		function criarTanque( id, time ) {
+			tanques[ id ] = new Tanque( id, time );
+		}
+		
+		function atirar( id ) {
+			
+		}
+		
+		
+		function moverTanque( id, rotacao, velocidade ) {
+			tanques[ id ].rotacao += rotacao;
+			tanques[ id ].velocidade += velocidade * 20;
+		}
+		
 	</script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         var socket = io();
         socket.on('board', function(msg){
-//             alert(msg);
-//             msg.x
-//             msg.y
-//             msg.id
-//             tanques[ 0 ].x
-            desenhaTanque(context, 50, 50, 0, "#F00");
+          
+            switch ( msg.command ) {
+            	case "create":
+	            	criarTanque( msg.params.id, msg.params.time );
+	            	break;
+
+            	case "shoot":
+	            	atirar( msg.params.id );
+	            	break;
+
+            	case "move":
+	            	moverTanque( msg.params.id, msg.params.r, msg.params.speed );
+	            	break;
+            }
         });
     </script>
 </body>
