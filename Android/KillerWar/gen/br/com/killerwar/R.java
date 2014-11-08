@@ -25,8 +25,8 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int aa=0x7f070004;
         public static final int btDown=0x7f070006;
+        public static final int btFire=0x7f070004;
         public static final int btLeft=0x7f070000;
         public static final int btRight=0x7f070001;
         public static final int btUp=0x7f070005;
