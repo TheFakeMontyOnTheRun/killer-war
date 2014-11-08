@@ -10,6 +10,7 @@
 
 	<script>
 		var tanques = new Array();
+		var projeteis = new Array();
 		var canvas = document.getElementById('board');
 		var context = canvas.getContext('2d');
 
@@ -32,6 +33,14 @@
 				tanques[ tanque ].y = v[ 1 ];
 				
 				tanques[ tanque ].velocidade = tanques[ tanque ].velocidade / 2;
+			}		
+			
+			for ( projetil in projeteis ) {
+				
+				var v = calculaVetor( projeteis[ projetil ].x, projeteis[ projetil ].y, projeteis[ projetil ].velocidade, projeteis[ projetil ].rotacao );
+
+				projeteis[ projetil ].x = v[ 0 ];
+				projeteis[ projetil ].y = v[ 1 ];
 			}			
 		}
 		
@@ -41,6 +50,10 @@
 			
 			for ( tanque in tanques ) {
 				desenhaTanque( context, tanques[ tanque ].x, tanques[ tanque ].y, tanques[ tanque ].rotacao , tanques[ tanque ].time )
+			}
+			
+			for ( projetil in projeteis ) {
+				desenhaProjetil( context, projeteis[ projetil ].x, projeteis[ projetil ].y, projeteis[ projetil ].rotacao );
 			}
 		}
 		
@@ -99,16 +112,16 @@
 			return graus * (Math.PI / 180.0);
 		}
 		
-		function desenhaProjetil( context, x0, y0, rotacao, style ) {
+		function desenhaProjetil( context, x0, y0, rotacao ) {
 			
-			var angulo = 180 - rotacao
+			var angulo = 180 + rotacao
 			
 			var rad1 = grauParaRad(angulo);
 			
-			desenhaCirculo( context, x0, y0, 5, style );
+			desenhaCirculo( context, x0, y0, 5, "#000" );
 			
 			desenhaLinha(context, x0, y0, x0 + (30 * Math.cos(rad1)), y0
-					+ (30 * Math.sin(rad1)), style);
+					+ (30 * Math.sin(rad1)), "#000");
 		}
 
 		function desenhaTanque(context, x, y, rotacao, style) {
@@ -166,13 +179,20 @@
 			this.velocidade = 0;
 		}
 		
+		function Projetil( tanque ) {
+			this.x = tanque.x;
+			this.y = tanque.y;
+			this.rotacao = tanque.rotacao;
+			this.velocidade = 70;
+		}
+		
 		
 		function criarTanque( id, time ) {
 			tanques[ id ] = new Tanque( id, time );
 		}
 		
 		function atirar( id ) {
-			
+			projeteis.push( new Projetil( tanques[ id ] ) );
 		}
 		
 		
@@ -180,6 +200,11 @@
 			tanques[ id ].rotacao += rotacao;
 			tanques[ id ].velocidade += velocidade * 20;
 		}
+		
+// 		criarTanque( 1, "red" );
+// 		criarTanque( 2, "blue" );
+// 		moverTanque( 1, 50, 1 );
+// 		atirar( 1 );
 		
 	</script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
