@@ -7,8 +7,9 @@ app.get('/', function(req, res){
 });
 
 
-
-
+app.get('/player', function(req, res){
+    res.sendfile(__dirname + '/player.html');
+});
 
 io.on('connection', function(socket){
   socket.on('board', function(msg){
