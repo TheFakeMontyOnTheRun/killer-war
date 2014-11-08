@@ -41,6 +41,20 @@
 
 				projeteis[ projetil ].x = v[ 0 ];
 				projeteis[ projetil ].y = v[ 1 ];
+				
+				for ( tanque in tanques ) {
+					
+					if( tanques[ tanque ].time != ( projeteis[ projetil ].emissor.time )  && tanques[ tanque ].atingido( projeteis[ projetil ] ) ) {
+						projeteis.splice( projetil, 1);
+						
+						tanques[ tanque ].escudo -= 1.0;
+	
+						if ( tanques[ tanque ].escudo <= 0.0 ) {
+							
+							tanques.splice( tanque, 1 );
+						}
+					}
+				}				
 			}			
 		}
 		
@@ -67,9 +81,11 @@
 
 		timerJogo = setInterval(function() {
 			atualizaJogo();
-		}, 200);
+		}, 10);
 		
-		
+// 		setInterval( function() {
+// 			atirar( 1 );
+// 		}, 4000 );
 		
 		function desenhaCirculo(context, x0, y0, radius, style) {
 
@@ -177,13 +193,21 @@
 			this.x = Math.random() * 255;
 			this.y = Math.random() * 255;
 			this.velocidade = 0;
+			this.escudo = 3;
+			
+			this.atingido = function( projetil ) {
+				
+				return ( this.x - 30 <= projetil.x && projetil.x <= this.x + 30 ) &&
+						( this.y - 30 <= projetil.y && projetil.y <= this.y + 30 );
+			};
 		}
 		
 		function Projetil( tanque ) {
 			this.x = tanque.x;
 			this.y = tanque.y;
 			this.rotacao = tanque.rotacao;
-			this.velocidade = 70;
+			this.emissor = tanque;
+			this.velocidade = 10;
 		}
 		
 		
@@ -201,10 +225,13 @@
 			tanques[ id ].velocidade += velocidade * 20;
 		}
 		
-// 		criarTanque( 1, "red" );
+// 		criarTanque( 1, "blue" );
+// 		tanques[ 1 ].x = 120;
+// 		tanques[ 1 ].y = 120;
 // 		criarTanque( 2, "blue" );
-// 		moverTanque( 1, 50, 1 );
-// 		atirar( 1 );
+// 		tanques[ 2 ].x = 550;
+// 		tanques[ 2 ].y = 120;
+		
 		
 	</script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
