@@ -139,7 +139,12 @@
     <script>
         var socket = io();
         socket.on('board', function(msg){
-            alert(msg);
+//             alert(msg);
+//             msg.x
+//             msg.y
+//             msg.id
+//             tanques[ 0 ].x
+            desenhaTanque(context, 50, 50, 0, "#F00");
         });
     </script>
 </body>
