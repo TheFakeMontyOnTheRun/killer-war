@@ -1,7 +1,5 @@
 package br.com.killerwar;
 
-import java.net.URISyntaxException;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,23 +8,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.drive.Drive;
 
-public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
 
-	String url;
+public class MainActivity extends Activity implements OnClickListener {
+
+	String url = "http://10.20.12.170:3001";
 	
 	Button btUp, btDown, btLeft, btRight, btFire;
-	
-	GoogleApiClient googleApiClient;
-	
+	Socket socket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,45 +38,36 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
         btUp = (Button) findViewById(R.id.btUp);
         btUp.setOnClickListener(this);
         
-        final Socket socket;
-		try {
-			socket = IO.socket("https://10.20.12.170:3001/");
-		
-			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-
-    		  @Override
-    		  public void call(Object... args) {
-    			  socket.emit("adduser", "teste");
-        		  socket.disconnect();
-    		  }
-
-    		}).on("board", new Emitter.Listener() {
-
-    		  @Override
-    		  public void call(Object... args) {
-    		  }
-
-    		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-
-    		  @Override
-    		  public void call(Object... args) {}
-
-    		});
-    		socket.connect();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-        connectGooglePlayService();
-    }
-
-	private void connectGooglePlayService() {
-		googleApiClient = new GoogleApiClient.Builder(this)
-        	.addApi(Drive.API)
-        	.addScope(Drive.SCOPE_FILE)
-        	.addConnectionCallbacks(this)
-        	.addOnConnectionFailedListener(this)
-        	.build();
-	}
+//		try {
+//			socket = IO.socket(url);
+//		
+//			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+//
+//    		  @Override
+//    		  public void call(Object... args) {
+//    			  socket.emit("adduser", "teste");
+////        		  socket.disconnect();
+//        		  Log.i("call", "chamado");
+//    		  }
+//
+//    		});
+//			.on("adduser", new Emitter.Listener() {
+//
+//    		  @Override
+//    		  public void call(Object... args) {
+//    		  }
+//
+//    		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+//
+//    		  @Override
+//    		  public void call(Object... args) {}
+//
+//    		});
+//    		socket.connect();
+//		} catch (URISyntaxException e) {
+//			e.printStackTrace();
+//		}
+   	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,27 +89,11 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 
 
 	@Override
-	public void onConnectionFailed(ConnectionResult arg0) {
-
-	}
-
-
-	@Override
-	public void onConnected(Bundle arg0) {
-		
-	}
-
-
-	@Override
-	public void onConnectionSuspended(int arg0) {
-		
-	}
-
-	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btDown:
-				
+				SendThread sendThread = new SendThread();
+				new Thread( sendThread ).start();
 				break;
 				
 			case R.id.btFire:

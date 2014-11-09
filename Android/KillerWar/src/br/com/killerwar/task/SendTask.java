@@ -9,26 +9,27 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 public class SendTask extends AsyncTask<Void, Void, Void>{
-
+	String url = "https://10.20.12.170:3001/";
 	@Override
 	protected Void doInBackground(Void... params) {
         	
         	final Socket socket;
-			try {
-				socket = IO.socket("http://10.20.12.170:3001/");
-			
-        	socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+        	try {
+    			socket = IO.socket(url);
+    		
+    			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
         		  @Override
         		  public void call(Object... args) {
-        			  socket.emit("board", "Android - {\"command\": \"create\", \"params\" : {\"id\": \"1\", \"time\": \"red\"}}");
-	        		  socket.disconnect();
+        			  socket.emit("adduser", "teste");
+            		  socket.disconnect();
         		  }
 
-        		}).on("board", new Emitter.Listener() {
+        		}).on("adduser", new Emitter.Listener() {
 
         		  @Override
-        		  public void call(Object... args) {}
+        		  public void call(Object... args) {
+        		  }
 
         		}).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
@@ -37,10 +38,9 @@ public class SendTask extends AsyncTask<Void, Void, Void>{
 
         		});
         		socket.connect();
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    		} catch (URISyntaxException e) {
+    			e.printStackTrace();
+    		}
 		return null;
 	}
 
